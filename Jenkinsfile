@@ -51,6 +51,8 @@ pipeline {
 
             steps {
                 sh '''
+                    npm ci
+                    npm run build
                     npm install serve
                     node_modules/.bin/serve -s build &
                     sleep 10
