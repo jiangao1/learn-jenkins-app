@@ -89,5 +89,27 @@ pipeline {
             }
         }
 
+        stage('Prod E2E') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.56.1-jammy'
+                    reuseNode true
+                }
+            }
+            environment {
+                CI_ENVIRONMENT_URL = 'https://precious-bonbon-2840d1.netlify.app'
+            }
+            steps {
+                sh '''
+                    npx playwright test --reporter=junit,html
+                '''
+            }
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright e2e Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
+            }
+        }
+        
     }
 }
