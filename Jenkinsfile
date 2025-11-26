@@ -39,11 +39,13 @@ pipeline {
             }
             steps {
                 echo 'Building Docker image..'
-                sh 'docker build -t myjenkinsapp .'
+                sh '''
+                    ls -la  # Debug: Check what files are in the workspace
+                    ls -la build/  # Debug: Check if build directory exists
+                    docker build -t myjenkinsapp .
+                '''
             }
         }
-
-
 
         stage('Deploy to AWS') {
             agent {
