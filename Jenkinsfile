@@ -40,8 +40,10 @@ pipeline {
             steps {
                 echo 'Building Docker image..'
                 sh '''
-                    ls -la  # Debug: Check what files are in the workspace
-                    ls -la build/  # Debug: Check if build directory exists
+                    pwd
+                    ls -la
+                    ls -la ../
+                    cp /var/jenkins_home/workspace/learn-jenkins-app/Dockerfile . || echo "Dockerfile not found in expected location"
                     docker build -t myjenkinsapp .
                 '''
             }
