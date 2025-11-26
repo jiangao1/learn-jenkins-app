@@ -32,18 +32,15 @@ pipeline {
         stage('Build Docker image') {
             agent {
                 docker {
-                    image 'docker:20.10.12-dind'
+                    image 'amazon/aws-cli'
                     reuseNode true
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    args "-u root --entrypoint=''"
                 }
             }
+
             steps {
-                echo 'Building Docker image..'
                 sh '''
-                    pwd
-                    ls -la
-                    ls -la ../
-                    cp /var/jenkins_home/workspace/learn-jenkins-app/Dockerfile . || echo "Dockerfile not found in expected location"
+                    amazon-linux-extras install docker -y
                     docker build -t myjenkinsapp .
                 '''
             }
