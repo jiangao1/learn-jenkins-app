@@ -30,6 +30,12 @@ pipeline {
         }
 
         stage('Build Docker image') {
+            agent {
+                docker {
+                    image 'docker:20.10.12-dind'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Building Docker image..'
                 sh 'docker build -t myjenkinsapp .'
